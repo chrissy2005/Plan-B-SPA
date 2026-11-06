@@ -253,3 +253,102 @@ body.auth-page {
         margin-bottom: 32px;
     }
 }
+
+/* Projektübersicht im Stil der MPA */
+.projects-view {
+    width: 300px;
+    max-width: 100%;
+    color: #351722;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.projects-view > h1 {
+    margin: 0 0 16px;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.projects-view > h1:focus {
+    outline: none;
+}
+
+.projects-status {
+    margin: 0 0 16px;
+    color: #6f5b63;
+}
+
+.projects-status:empty {
+    display: none;
+}
+
+.spa-project-card {
+    margin-bottom: 12px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e5dde1;
+    border-radius: 6px;
+}
+
+.spa-project-card.is-closed {
+    background: #f1e8ec;
+}
+
+.spa-project-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.spa-project-card h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.spa-project-status {
+    display: inline-block;
+    padding: 0 12px;
+    color: #993556;
+    background: #fff;
+    border: 1px solid #993556;
+    border-radius: 999px;
+    font-size: 13px;
+    line-height: 22px;
+    white-space: nowrap;
+}
+
+.spa-project-card p {
+    margin: 0;
+    color: #6f5b63;
+    font-size: 14px;
+}
+
+.projects-error {
+    padding: 12px;
+    color: #b3261e;
+    background: #fdf1f0;
+    border: 1px solid #b3261e;
+    border-radius: 6px;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.projects-view > button {
+    min-height: 40px;
+    padding: 8px 16px;
+    color: #993556;
+    background: #fff;
+    border: 1px solid #c9b5bd;
+    border-radius: 6px;
+}
+
+.projects-view > button:hover {
+    background: #fbf7f8;
+}

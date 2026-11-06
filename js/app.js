@@ -1,5 +1,6 @@
 import { getSession, clearSession } from "./auth.js";
 import { mountLogin } from "./login-view.js";
+import { mountProjects } from "./projects-view.js";
 
 const app = document.getElementById("app");
 const navigation = document.getElementById("mainNavigation");
@@ -79,8 +80,15 @@ function renderRoute() {
     if (path === "/login") {
         document.title = "Anmelden | Plan B";
 
-        cleanupCurrentView = mountLogin(app, () => {
+         cleanupCurrentView = mountLogin(app, () => {
             replaceRoute("/home");
+        });
+    } else if (path === "/projects") {
+        document.title = "Meine Projekte | Plan B";
+
+        cleanupCurrentView = mountProjects(app, () => {
+            clearSession();
+            replaceRoute("/login");
         });
     } else {
         const route = routes[path] ?? {
