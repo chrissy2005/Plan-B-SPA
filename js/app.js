@@ -1,7 +1,12 @@
+import { getSession, clearSession } from "./auth.js";
+import { mountLogin } from "./login-view.js";
+
 const app = document.getElementById("app");
-const navigationLinks = document.querySelectorAll(
-    ".app-header nav a"
-);
+const navigation = document.getElementById("mainNavigation");
+const navigationLinks = navigation.querySelectorAll("a");
+const logoutButton = document.getElementById("logoutButton");
+
+let cleanupCurrentView = null;
 
 const routes = {
     "/home": {
@@ -21,17 +26,12 @@ const routes = {
     }
 };
 
-function renderRoute() {
-    const path = window.location.hash.slice(1) || "/home";
+function replaceRoute(path) {
+    window.history.replaceState(null, "", `#${path}`);
+    renderRoute();
+}
 
-    const route = routes[path] ?? {
-        title: "Seite nicht gefunden",
-        description:
-            "Diese Ansicht gibt es nicht. Wähle oben eine Seite aus."
-    };
-
-    document.title = `${route.title} | Plan B`;
-
+function renderPlaceholder(route) {
     const section = document.createElement("section");
     section.className = "page-card";
 
@@ -44,19 +44,61 @@ function renderRoute() {
 
     section.append(heading, description);
     app.replaceChildren(section);
+}
+
+function renderRoute() {
+    if (cleanupCurrentView) {
+        cleanupCurrentView();
+        cleanupCurrentView = null;
+    }
+
+    const session = getSession();
+    let path = window.location.hash.slice(1) || "/home";
+
+    // Ohne gespeicherte Anmeldung zur Anmeldeansicht wechseln.
+    if (!session && path !== "/login") {
+        path = "/login";
+        window.history.replaceState(null, "", "#/login");
+    } else if (session && path === "/login") {
+        path = "/home";
+        window.history.replaceState(null, "", "#/home");
+    }
+
+    navigation.hidden = !session;
+    logoutButton.hidden = !session;
 
     for (const link of navigationLinks) {
-        const isActive = link.getAttribute("href") === `#${path}`;
-
-        if (isActive) {
+        if (link.getAttribute("href") === `#${path}`) {
             link.setAttribute("aria-current", "page");
         } else {
             link.removeAttribute("aria-current");
         }
     }
 
-    heading.focus({ preventScroll: true });
+    if (path === "/login") {
+        document.title = "Anmelden | Plan B";
+
+        cleanupCurrentView = mountLogin(app, () => {
+            replaceRoute("/home");
+        });
+    } else {
+        const route = routes[path] ?? {
+            title: "Seite nicht gefunden",
+            description:
+                "Diese Ansicht gibt es nicht. Wähle oben eine Seite aus."
+        };
+
+        document.title = `${route.title} | Plan B`;
+        renderPlaceholder(route);
+    }
+
+    app.querySelector("h1")?.focus({ preventScroll: true });
 }
+
+logoutButton.addEventListener("click", () => {
+    clearSession();
+    replaceRoute("/login");
+});
 
 window.addEventListener("hashchange", renderRoute);
 

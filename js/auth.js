@@ -96,6 +96,7 @@ export async function login(email, password, { signal } = {}) {
         userId: data.userId
     };
 
+    signal?.throwIfAborted();
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
     return session;
