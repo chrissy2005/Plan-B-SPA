@@ -114,26 +114,123 @@ input:focus-visible {
     margin-left: auto;
 }
 
+/* Anmeldeansicht im Stil der bisherigen MPA */
+body.auth-page {
+    font-family: system-ui, sans-serif;
+    color: #000;
+    background: #f6f4f5;
+}
+
+.auth-page .app-header {
+    display: none;
+}
+
+.auth-page #app {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-width: none;
+    padding: 16px;
+}
+
 .auth-card {
-    max-width: 440px;
-    margin: 40px auto;
+    width: 100%;
+    max-width: 410px;
+    margin: 0;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e5dde1;
+    border-radius: 12px;
+}
+
+.auth-card h1 {
+    margin: 0.67em 0;
+    font-size: 32px;
+    line-height: 1.2;
+}
+
+.auth-card .auth-intro {
+    margin: 24px 0 56px;
+    line-height: 1.5;
 }
 
 .auth-card form {
     display: grid;
-    gap: 12px;
+    gap: 24px;
+}
+
+.auth-row {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr);
+    align-items: center;
+    gap: 4px;
 }
 
 .auth-card label {
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .auth-card input {
     width: 100%;
     min-width: 0;
+    height: 24px;
+    padding: 1px 3px;
+    color: #000;
+    background: #fff;
+    border: 1px solid #767676;
+    border-radius: 2px;
+}
+
+.password-field {
+    position: relative;
+    min-width: 0;
+}
+
+.password-field input {
+    display: block;
+    padding-right: 32px;
+}
+
+.auth-card .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    display: grid;
+    place-items: center;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 2px 4px;
+    color: #993556;
+    background: transparent;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.auth-card .auth-submit {
+    justify-self: start;
+    margin-top: 12px;
     padding: 10px;
-    border: 1px solid #bca3af;
-    border-radius: 6px;
+    color: #fff;
+    background: #993556;
+    border: 0;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.auth-card .auth-submit:hover:not(:disabled) {
+    background: #812c49;
+}
+
+.auth-card .auth-register {
+    margin: 24px 0 0;
+    line-height: 1.5;
+}
+
+.auth-register a {
+    color: #551a8b;
+    text-decoration: underline;
 }
 
 .form-error {
@@ -144,4 +241,15 @@ input:focus-visible {
 
 .form-error:empty {
     display: none;
+}
+
+@media (max-width: 359px) {
+    .auth-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .auth-card .auth-intro {
+        margin-bottom: 32px;
+    }
 }

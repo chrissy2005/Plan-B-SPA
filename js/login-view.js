@@ -6,32 +6,73 @@ export function mountLogin(container, onSuccess) {
 
     container.innerHTML = `
         <section class="page-card auth-card">
-            <h1 tabindex="-1">Anmelden</h1>
-            <p>Melde dich mit deinem bestehenden Plan-B-Konto an.</p>
+            <h1 tabindex="-1">Plan-B</h1>
+            <p class="auth-intro">
+                Melde dich an, um deine Projekte zu sehen
+            </p>
 
             <form id="loginForm">
-                <label for="loginEmail">E-Mail-Adresse</label>
-                <input
-                    id="loginEmail"
-                    name="email"
-                    type="email"
-                    autocomplete="username"
-                    required
-                >
+                <div class="auth-row">
+                    <label for="loginEmail">E-Mail:</label>
+                    <input
+                        id="loginEmail"
+                        name="email"
+                        type="email"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
 
-                <label for="loginPassword">Passwort</label>
-                <input
-                    id="loginPassword"
-                    name="password"
-                    type="password"
-                    autocomplete="current-password"
-                    required
-                >
+                <div class="auth-row">
+                    <label for="loginPassword">Passwort:</label>
+
+                    <div class="password-field">
+                        <input
+                            id="loginPassword"
+                            name="password"
+                            type="password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            id="togglePassword"
+                            class="toggle-password"
+                            type="button"
+                            aria-label="Passwort anzeigen"
+                            aria-controls="loginPassword"
+                            aria-pressed="false"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                width="18"
+                                height="18"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                                focusable="false"
+                            >
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
                 <p id="loginError" class="form-error" role="alert"></p>
 
-                <button type="submit">Anmelden</button>
+                <button class="auth-submit" type="submit">
+                    Anmelden
+                </button>
             </form>
+
+            <p class="auth-register">
+                Noch kein Konto?
+                <a href="https://plan-b-frontend-1a40950601f6.herokuapp.com/Login/HTML/register.html">
+                    Registrieren
+                </a>
+            </p>
         </section>
     `;
 
@@ -40,6 +81,27 @@ export function mountLogin(container, onSuccess) {
     const passwordInput = container.querySelector("#loginPassword");
     const errorElement = container.querySelector("#loginError");
     const submitButton = form.querySelector('button[type="submit"]');
+    const togglePassword = container.querySelector("#togglePassword");
+
+    function hidePassword() {
+        passwordInput.type = "password";
+        togglePassword.setAttribute("aria-label", "Passwort anzeigen");
+        togglePassword.setAttribute("aria-pressed", "false");
+    }
+
+    togglePassword.addEventListener("click", () => {
+        const showPassword = passwordInput.type === "password";
+
+        passwordInput.type = showPassword ? "text" : "password";
+        togglePassword.setAttribute(
+            "aria-label",
+            showPassword ? "Passwort verbergen" : "Passwort anzeigen"
+        );
+        togglePassword.setAttribute(
+            "aria-pressed",
+            String(showPassword)
+        );
+    }, { signal: controller.signal });
 
     form.addEventListener("submit", async event => {
         event.preventDefault();
@@ -53,6 +115,7 @@ export function mountLogin(container, onSuccess) {
         submitButton.disabled = true;
         submitButton.textContent = "Anmeldung läuft …";
         form.setAttribute("aria-busy", "true");
+        hidePassword();
 
         try {
             await login(emailInput.value, passwordInput.value, {
@@ -68,6 +131,7 @@ export function mountLogin(container, onSuccess) {
             }
         } finally {
             passwordInput.value = "";
+            hidePassword();
             isSubmitting = false;
 
             if (!controller.signal.aborted) {
@@ -82,5 +146,6 @@ export function mountLogin(container, onSuccess) {
     return () => {
         controller.abort();
         passwordInput.value = "";
+        hidePassword();
     };
 }

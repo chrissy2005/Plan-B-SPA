@@ -66,6 +66,7 @@ function renderRoute() {
 
     navigation.hidden = !session;
     logoutButton.hidden = !session;
+    document.body.classList.toggle("auth-page", path === "/login");
 
     for (const link of navigationLinks) {
         if (link.getAttribute("href") === `#${path}`) {
