@@ -1,6 +1,7 @@
 import { getSession, clearSession } from "./auth.js";
 import { mountLogin } from "./login-view.js";
 import { mountProjects } from "./projects-view.js";
+import { mountProjectDetail } from "./project-detail-view.js";
 
 const app = document.getElementById("app");
 const navigation = document.getElementById("mainNavigation");
@@ -69,8 +70,15 @@ function renderRoute() {
     logoutButton.hidden = !session;
     document.body.classList.toggle("auth-page", path === "/login");
 
+    const projectMatch = path.match(/^\/projects\/([1-9]\d*)$/);
+
     for (const link of navigationLinks) {
-        if (link.getAttribute("href") === `#${path}`) {
+        const href = link.getAttribute("href");
+        const isCurrent =
+            href === `#${path}`
+            || (href === "#/projects" && projectMatch !== null);
+
+        if (isCurrent) {
             link.setAttribute("aria-current", "page");
         } else {
             link.removeAttribute("aria-current");
@@ -83,14 +91,25 @@ function renderRoute() {
          cleanupCurrentView = mountLogin(app, () => {
             replaceRoute("/home");
         });
-    } else if (path === "/projects") {
-        document.title = "Meine Projekte | Plan B";
+   } else if (path === "/projects") {
+            document.title = "Meine Projekte | Plan B";
 
-        cleanupCurrentView = mountProjects(app, () => {
-            clearSession();
-            replaceRoute("/login");
-        });
-    } else {
+            cleanupCurrentView = mountProjects(app, () => {
+                clearSession();
+                replaceRoute("/login");
+            });
+        } else if (projectMatch) {
+            document.title = "Projekt | Plan B";
+
+            cleanupCurrentView = mountProjectDetail(
+                app,
+                projectMatch[1],
+                () => {
+                    clearSession();
+                    replaceRoute("/login");
+                }
+            );
+        } else {
         const route = routes[path] ?? {
             title: "Seite nicht gefunden",
             description:

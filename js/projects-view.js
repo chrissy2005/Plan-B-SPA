@@ -65,7 +65,13 @@ export function mountProjects(container, onLoginRequired) {
             header.className = "spa-project-card-header";
 
             const title = document.createElement("h2");
-            title.textContent = project.name;
+
+            const projectLink = document.createElement("a");
+            projectLink.className = "spa-project-link";
+            projectLink.href = `#/projects/${encodeURIComponent(project.projectId)}`;
+            projectLink.textContent = project.name;
+
+            title.append(projectLink);
 
             const badge = document.createElement("span");
             badge.className = "spa-project-status";

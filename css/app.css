@@ -408,3 +408,289 @@ body.auth-page {
 .projects-view > button:hover {
     background: #fbf7f8;
 }
+
+/* Projektlinks und Projektdetails */
+.spa-project-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.spa-project-link:hover {
+    color: #993556;
+    text-decoration: underline;
+}
+
+.project-detail-view {
+    color: #351722;
+}
+
+.project-back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #993556;
+    text-decoration: none;
+}
+
+.project-back-link:hover {
+    text-decoration: underline;
+}
+
+.project-detail-heading {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.project-detail-heading h1 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.2;
+}
+
+.project-detail-heading h1:focus {
+    outline: none;
+}
+
+.project-role,
+.project-muted {
+    color: #6f5b63;
+    font-size: 14px;
+}
+
+.project-description {
+    margin: 0 0 24px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.project-load-status:empty {
+    display: none;
+}
+
+.project-error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.project-detail-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.project-members-card {
+    border: 1px solid #e5dde1;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.project-members-card h2 {
+    margin: 0;
+    padding: 14px 16px;
+    background: #f7eef2;
+    border-bottom: 1px solid #e5dde1;
+    font-size: 18px;
+}
+
+.project-member-list {
+    margin: 0;
+    padding: 16px;
+    list-style: none;
+}
+
+.project-member-list li + li {
+    margin-top: 10px;
+}
+
+.project-member-list li {
+    overflow-wrap: anywhere;
+}
+
+.project-tasks {
+    min-width: 0;
+}
+
+.project-tasks > h2 {
+    margin: 0 0 14px;
+    font-size: 20px;
+}
+
+.project-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e5dde1;
+    border-radius: 6px;
+}
+
+.project-table-wrap:focus-visible {
+    outline: 3px solid #993556;
+    outline-offset: 3px;
+}
+
+.project-task-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.project-task-table th {
+    padding: 12px;
+    background: #f7eef2;
+    font-weight: 600;
+}
+
+.project-task-table td {
+    padding: 12px;
+    border-top: 1px solid #e5dde1;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.project-task-table .project-empty {
+    padding: 20px 12px;
+    color: #6f5b63;
+}
+
+.project-detail-view button {
+    padding: 8px 16px;
+    color: #351722;
+    background: #fff;
+    border: 1px solid #c9b5bd;
+    border-radius: 6px;
+}
+
+.project-detail-view button:hover:not(:disabled) {
+    background: #fbf7f8;
+}
+
+.project-detail-view .project-task-link {
+    padding: 0;
+    color: #351722;
+    background: transparent;
+    border: 0;
+    border-radius: 2px;
+    text-align: left;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.project-detail-view .project-task-link:hover {
+    color: #993556;
+    background: transparent;
+    text-decoration: underline;
+}
+
+.project-tasks > .project-done-heading {
+    margin-top: 28px;
+}
+
+.project-done-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.project-done-list li + li {
+    margin-top: 10px;
+}
+
+.project-done-list .project-task-link {
+    text-decoration: line-through;
+}
+
+.project-detail-dialog {
+    width: min(600px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+    padding: 0;
+    color: #351722;
+    background: #fff;
+    border: 2px solid #993556;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+.project-detail-dialog::backdrop {
+    background: rgb(0 0 0 / 35%);
+}
+
+.project-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 24px;
+    border-bottom: 1px solid #e5dde1;
+}
+
+.project-dialog-head h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.project-detail-view .project-dialog-close {
+    padding: 0 8px;
+    border: 0;
+    font-size: 28px;
+}
+
+.project-dialog-body {
+    padding: 20px 24px;
+}
+
+.project-task-details {
+    margin: 0;
+}
+
+.project-task-details dt {
+    margin-top: 16px;
+    color: #6f5b63;
+    font-size: 14px;
+}
+
+.project-task-details dt:first-child {
+    margin-top: 0;
+}
+
+.project-task-details dd {
+    margin: 4px 0 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.project-subtask-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.project-subtask-list li {
+    padding: 12px 0;
+    border-top: 1px solid #e5dde1;
+    overflow-wrap: anywhere;
+}
+
+.project-subtask-list p {
+    margin: 6px 0 0;
+}
+
+.project-preserve-lines {
+    white-space: pre-wrap;
+}
+
+.project-dialog-foot {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid #e5dde1;
+}
+
+@media (max-width: 900px) {
+    .project-detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
