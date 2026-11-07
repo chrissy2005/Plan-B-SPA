@@ -1,7 +1,7 @@
 :root {
-    font-family: Arial, sans-serif;
-    color: #38212b;
-    background: #f6f3f5;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #351722;
+    background: #f6f4f5;
 }
 
 * {
@@ -12,54 +12,98 @@ body {
     margin: 0;
 }
 
+body:not(.auth-page) {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
 .app-header {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 24px;
-    padding: 12px 24px;
+    gap: 28px;
+    min-height: 72px;
+    padding: 10px 24px;
     background: #fff;
-    border-bottom: 2px solid #9b315c;
+    border-bottom: 2px solid #993556;
 }
 
 .app-brand {
-    color: #9b315c;
-    font-size: 1.3rem;
-    font-weight: bold;
+    display: grid;
+    place-items: center;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    color: #993556;
+    background: #fff;
+    border: 2px solid #993556;
+    border-radius: 6px;
     text-decoration: none;
+}
+
+.app-brand svg {
+    width: 24px;
+    height: 24px;
 }
 
 .app-header nav {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     gap: 8px;
 }
 
 .app-header nav a {
-    padding: 10px 14px;
-    color: inherit;
-    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 6px 10px;
+    color: #351722;
+    background: transparent;
+    border: 2px solid transparent;
     border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none;
 }
 
 .app-header nav a:hover {
-    background: #f6eaf0;
+    background: #fbf7f8;
 }
 
 .app-header nav a[aria-current="page"] {
-    color: #fff;
-    background: #9b315c;
+    color: #993556;
+    background: #fff;
+    border-color: #993556;
+    font-weight: 600;
 }
 
 a:focus-visible {
-    outline: 3px solid #9b315c;
+    outline: 3px solid #993556;
     outline-offset: 3px;
 }
 
 #app {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px;
+    margin: 0;
+    padding: 20px 24px;
+}
+
+@media (max-width: 800px) {
+    .app-header {
+        gap: 12px;
+        padding: 8px 10px;
+    }
+
+    #app {
+        padding: 20px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header nav {
+        order: 3;
+        flex-basis: 100%;
+    }
 }
 
 .page-card {
@@ -111,7 +155,19 @@ input:focus-visible {
 }
 
 #logoutButton {
+    flex-shrink: 0;
+    min-height: 40px;
     margin-left: auto;
+    padding: 8px 16px;
+    color: #351722;
+    background: #fff;
+    border: 1px solid #c9b5bd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+#logoutButton:hover:not(:disabled) {
+    background: #fbf7f8;
 }
 
 /* Anmeldeansicht im Stil der bisherigen MPA */
@@ -287,7 +343,7 @@ body.auth-page {
 .spa-project-card {
     margin-bottom: 12px;
     padding: 16px;
-    background: #fff;
+    background: transparent;
     border: 1px solid #e5dde1;
     border-radius: 6px;
 }
