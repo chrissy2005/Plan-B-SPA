@@ -694,3 +694,276 @@ body.auth-page {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* Projektdetails näher an der MPA */
+.project-back-link {
+    color: #6f5b63;
+    text-decoration: underline;
+}
+
+.project-detail-heading h1 {
+    font-size: 28px;
+}
+
+.project-detail-layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 30px;
+    margin-top: 36px;
+}
+
+.project-members-card {
+    background: #fff;
+}
+
+.project-members-card h2 {
+    padding: 24px 18px 12px;
+    background: transparent;
+    border-bottom: 0;
+}
+
+.project-member-list {
+    padding: 16px 18px 24px;
+}
+
+.project-task-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-height: 44px;
+    margin-bottom: 20px;
+}
+
+.project-task-toolbar h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.project-detail-view .project-create-task {
+    color: #993556;
+    border: 2px dashed #993556;
+    font-weight: 600;
+}
+
+.project-table-wrap {
+    border-color: #aaa;
+}
+
+.project-task-table {
+    table-layout: fixed;
+    font-size: 15px;
+}
+
+.project-task-table th,
+.project-task-table td {
+    padding: 14px 16px;
+    vertical-align: middle;
+}
+
+.project-task-table th:nth-child(1) { width: 7%; }
+.project-task-table th:nth-child(2) { width: 17%; }
+.project-task-table th:nth-child(3) { width: 10%; }
+.project-task-table th:nth-child(4) { width: 19%; }
+.project-task-table th:nth-child(5) { width: 10%; }
+.project-task-table th:nth-child(6) { width: 13%; }
+.project-task-table th:nth-child(7) { width: 8%; }
+.project-task-table th:nth-child(8) { width: 16%; }
+
+.project-detail-view .project-task-link {
+    text-decoration: underline;
+}
+
+.project-priority-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    color: #993556;
+    background: #fff;
+    border: 1px solid #993556;
+    border-radius: 999px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.project-tasks > .project-done-heading {
+    margin-top: 36px;
+    color: #6f5b63;
+    font-size: 18px;
+}
+
+/* Formular: Task anlegen */
+.task-create-dialog {
+    width: min(640px, calc(100% - 32px));
+}
+
+.task-create-dialog fieldset {
+    min-width: 0;
+    margin: 0;
+}
+
+.task-create-fields {
+    display: grid;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 0;
+}
+
+.task-create-project {
+    margin: 0;
+    color: #6f5b63;
+}
+
+.task-type-choice {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px;
+    border: 1px solid #e5dde1;
+    border-radius: 6px;
+}
+
+.task-type-choice label,
+.task-member-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.task-create-dialog legend {
+    padding: 0 6px;
+    font-weight: 600;
+}
+
+.task-create-field {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.task-create-field input,
+.task-create-field textarea,
+.task-create-field select {
+    width: 100%;
+    min-width: 0;
+    padding: 9px 10px;
+    color: #351722;
+    background: #fff;
+    border: 1px solid #c9b5bd;
+    border-radius: 5px;
+    font: inherit;
+}
+
+.task-create-field textarea {
+    resize: vertical;
+}
+
+.task-create-dialog select:focus-visible,
+.task-create-dialog textarea:focus-visible {
+    outline: 3px solid #993556;
+    outline-offset: 3px;
+}
+
+.task-create-dialog input[type="checkbox"],
+.task-create-dialog input[type="radio"] {
+    accent-color: #993556;
+}
+
+.task-create-dates {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.task-members {
+    padding: 12px;
+    border: 1px solid #e5dde1;
+    border-radius: 6px;
+}
+
+.task-member-option {
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+}
+
+.task-long-fields {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    border: 0;
+}
+
+.task-long-fields h3 {
+    margin: 12px 0 0;
+    font-size: 18px;
+}
+
+.task-long-fields p {
+    margin: 0;
+}
+
+.task-subtask-editor {
+    display: grid;
+    gap: 16px;
+}
+
+.task-create-dialog .task-subtask-row {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #e5dde1;
+    border-radius: 6px;
+}
+
+.task-subtask-row button,
+.task-add-subtask {
+    justify-self: start;
+}
+
+.task-create-feedback {
+    padding: 0 24px;
+}
+
+.task-create-feedback .form-error {
+    margin-bottom: 16px;
+    white-space: pre-line;
+}
+
+.task-create-feedback button {
+    margin-bottom: 16px;
+}
+
+.task-create-dialog .project-dialog-foot {
+    gap: 12px;
+}
+
+.project-detail-view .task-create-submit {
+    color: #fff;
+    background: #993556;
+    border-color: #993556;
+    font-weight: 600;
+}
+
+.project-detail-view .task-create-submit:hover:not(:disabled) {
+    background: #812c49;
+}
+
+@media (max-width: 900px) {
+    .project-detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 540px) {
+    .task-create-dates {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .task-create-fields {
+        padding: 16px;
+    }
+
+    .task-create-feedback {
+        padding: 0 16px;
+    }
+}

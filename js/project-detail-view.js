@@ -1,4 +1,5 @@
 import { graphqlRequest } from "./graphql.js";
+import { mountTaskCreate } from "./task-create.js";
 
 const PROJECT_QUERY = `
     query ProjectDetails($projectId: ID!) {
@@ -74,7 +75,7 @@ function element(tag, className = "", text) {
 
 // Die Backend-Zeitangaben haben keinen Zeitzonenoffset.
 // Deshalb formatieren wir sie ohne automatische Zeitverschiebung.
-function formatDateTime(value) {
+function formatDateTime(value, compact = false) {
     if (!value) return "–";
 
     const match = String(value).match(
@@ -84,12 +85,15 @@ function formatDateTime(value) {
     if (!match) return String(value);
 
     const [, year, month, day, hour, minute] = match;
-    return `${day}.${month}.${year}, ${hour}:${minute}`;
+
+    return compact
+        ? `${day}.${month}. ${hour}:${minute}`
+        : `${day}.${month}.${year}, ${hour}:${minute}`;
 }
 
 function progressText(task) {
     if (task.type === "MEETING") {
-        return task.done ? "Erledigt" : "Offen";
+        return "–";
     }
 
     const total = task.subtasks.length;
@@ -101,7 +105,7 @@ function progressText(task) {
     const done = task.subtasks.filter(subtask => subtask.done).length;
     const percent = Math.round(done / total * 100);
 
-    return `${done}/${total} · ${percent} %`;
+    return `${done}/${total} Teilaufgaben · ${percent} %`;
 }
 
 export function mountProjectDetail(
@@ -113,6 +117,7 @@ export function mountProjectDetail(
     const { signal } = controller;
     let isLoading = false;
     let memberNames = new Map();
+    let currentProject = null;
 
     container.innerHTML = `
         <section class="project-detail-view">
@@ -148,7 +153,13 @@ export function mountProjectDetail(
 
                 <section class="project-tasks"
                          aria-labelledby="projectTasksHeading">
-                    <h2 id="projectTasksHeading">To-Do's</h2>
+                    <div class="project-task-toolbar">
+                        <h2 id="projectTasksHeading">To-Do's</h2>
+
+                        <button class="project-create-task" type="button" hidden>
+                            + Task anlegen
+                        </button>
+                    </div>
 
                     <div class="project-table-wrap"
                          tabindex="0"
@@ -158,12 +169,12 @@ export function mountProjectDetail(
                             <thead>
                                 <tr>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Titel</th>
+                                    <th scope="col">Aufgabe</th>
                                     <th scope="col">Typ</th>
                                     <th scope="col">Teilnehmer</th>
                                     <th scope="col">Start</th>
                                     <th scope="col">Ende / Frist</th>
-                                    <th scope="col">Priorität</th>
+                                    <th scope="col">Prio</th>
                                     <th scope="col">Fortschritt</th>
                                 </tr>
                             </thead>
@@ -211,6 +222,25 @@ export function mountProjectDetail(
     const dialog = view.querySelector("dialog");
     const dialogTitle = view.querySelector("#projectTaskDialogTitle");
     const dialogBody = view.querySelector(".project-dialog-body");
+    const createButton = view.querySelector(".project-create-task");
+    const taskCreate = mountTaskCreate(
+        view,
+        () => currentProject,
+        async () => {
+            await loadProject();
+
+            if (!signal.aborted && !layout.hidden && !createButton.hidden) {
+                createButton.focus();
+            }
+        },
+        onLoginRequired
+    );
+
+    createButton.addEventListener(
+        "click",
+        () => taskCreate.open(),
+        { signal }
+    );
 
     function memberName(userId) {
         if (userId == null) return "Nicht zugewiesen";
@@ -320,6 +350,11 @@ export function mountProjectDetail(
     }
 
     function renderProject(project) {
+        currentProject = project;
+        createButton.hidden =
+            project.role !== "PROJECT_LEADER"
+            || project.status !== "ACTIVE";
+
         heading.textContent = project.name;
         document.title = `${project.name} | Plan B`;
 
@@ -381,28 +416,37 @@ export function mountProjectDetail(
         tableBody.replaceChildren();
 
         for (const task of openTasks) {
+            const isLong = task.type === "LONG_TODO";
             const row = element("tr");
             const titleCell = element("td");
+
             titleCell.append(taskButton(task));
+
+            const priorityCell = element("td");
+
+            if (isLong) {
+                priorityCell.append(element(
+                    "span",
+                    "project-priority-badge",
+                    PRIORITY[task.priority] ?? "–"
+                ));
+            } else {
+                priorityCell.textContent = "–";
+            }
 
             row.append(
                 element("td", "", "Offen"),
                 titleCell,
-                element(
-                    "td",
-                    "",
-                    task.type === "MEETING" ? "Meeting" : "Langes To-Do"
-                ),
+                element("td", "", isLong ? "Langes To-Do" : "Meeting"),
                 element("td", "", participantsText(task)),
-                element("td", "", formatDateTime(task.startDateTime)),
-                element("td", "", formatDateTime(task.endDateTime)),
+                element("td", "", formatDateTime(task.startDateTime, true)),
                 element(
                     "td",
                     "",
-                    task.type === "MEETING"
-                        ? "–"
-                        : PRIORITY[task.priority] ?? "–"
+                    (isLong ? "Frist " : "")
+                        + formatDateTime(task.endDateTime, true)
                 ),
+                priorityCell,
                 element("td", "", progressText(task))
             );
 
@@ -438,6 +482,8 @@ export function mountProjectDetail(
         if (isLoading || signal.aborted) return;
 
         isLoading = true;
+        currentProject = null;
+        createButton.hidden = true;
         loadStatus.textContent = "Projekt wird geladen …";
         errorElement.hidden = true;
         errorElement.textContent = "";
@@ -506,6 +552,7 @@ export function mountProjectDetail(
     loadProject();
 
     return () => {
+        taskCreate.destroy();
         controller.abort();
 
         if (dialog.open) {
